@@ -132,4 +132,65 @@ A successful root session should show `root` and UID `0`.
 After the demonstration, restore the original configuration or a safer policy. A common baseline is:
 
 ```text
-PermitRootLogin
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+```
+
+Validate and restart SSH:
+
+```bash
+sudo sshd -t
+sudo systemctl restart ssh
+```
+
+Ensure key-based login for the normal Ubuntu account works before closing the original session. Check included SSH configuration files if the effective settings differ from the lines edited.
+
+## Testing and Verification
+
+- [ ] AWS Academy Sandbox started.
+- [ ] Ubuntu EC2 instance running.
+- [ ] Security group configured for approved SSH access.
+- [ ] MobaXterm connection to Ubuntu successful.
+- [ ] Root password configured.
+- [ ] SSH configuration validated.
+- [ ] Root login test performed.
+- [ ] Safer SSH settings restored.
+- [ ] Normal Ubuntu access verified again.
+
+## Troubleshooting
+
+| Problem | Possible Solution |
+|---|---|
+| SSH connection times out | Check the public IP, instance state, network route, and security-group rules. |
+| `Permission denied (publickey)` | Verify the username and private key. |
+| Root password authentication fails | Check the root password and effective SSH configuration. |
+| SSH service fails to restart | Run `sudo sshd -t` and correct configuration errors. |
+| SSH settings do not take effect | Inspect `/etc/ssh/sshd_config.d/` and run `sudo sshd -T`. |
+
+## Security Precautions
+
+- Restrict SSH access to an approved source IP.
+- Never expose root password SSH login on a production server.
+- Never upload private keys, passwords, or AWS credentials to GitHub.
+- Keep the existing SSH session open while changing configuration.
+- Restore safer settings after testing.
+- Use the normal Ubuntu account with SSH keys and `sudo` for administration.
+
+## Conclusion
+
+This practical demonstrates how to connect to an Ubuntu EC2 instance through MobaXterm and configure SSH authentication for a controlled root-login demonstration. It also highlights the importance of validating SSH settings and restoring safer access controls after testing.
+
+## References
+
+- [Amazon EC2 User Guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/)
+- [Ubuntu Server Documentation](https://documentation.ubuntu.com/server/)
+- [OpenSSH Manual](https://man.openbsd.org/sshd)
+
+---
+
+**Project type:** Cloud Computing / Linux Administration Practical
+
+**Environment:** AWS Academy Sandbox, Ubuntu EC2, MobaXterm
+
+**Documentation:** `AWS_EC2_Direct_Root_Login_Doc.pdf`
+
